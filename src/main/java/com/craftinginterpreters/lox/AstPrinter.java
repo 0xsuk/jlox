@@ -6,6 +6,11 @@ class AstPrinter implements Expr.Visitor<String> {
 	}
 
 	@Override
+	public String visitAssignExpr(Expr.Assign expr) {
+		return parenthesize("assign", new Expr.Variable(expr.name), expr.value);
+	}
+
+	@Override
 	public String visitBinaryExpr(Expr.Binary expr) {
 		return parenthesize(expr.operator.lexeme, expr.left, expr.right);
 	}
@@ -19,12 +24,18 @@ class AstPrinter implements Expr.Visitor<String> {
 	public String visitLiteralExpr(Expr.Literal expr) {
 		if (expr.value == null)
 			return "nil";
+		// TODO: should be escaped if value string
 		return expr.value.toString();
 	}
 
 	@Override
 	public String visitUnaryExpr(Expr.Unary expr) {
 		return parenthesize(expr.operator.lexeme, expr.right);
+	}
+
+	@Override
+	public String visitVariableExpr(Expr.Variable expr) {
+		return expr.name.lexeme;
 	}
 
 	private String parenthesize(String name, Expr... exprs) {
@@ -42,13 +53,8 @@ class AstPrinter implements Expr.Visitor<String> {
 	// java -cp target/classes/ com.craftinginterpreters.lox.AstPrinter
 	// (* (- 123) (group 45.67))
 	public static void main(String[] args) { // for test
-		Expr expression = new Expr.Binary(
-				new Expr.Unary(
-						new Token(TokenType.MINUS, "-", null, 1),
-						new Expr.Literal(123)), // -123
-				new Token(TokenType.STAR, "*", null, 1), // *
-				new Expr.Grouping(new Expr.Literal(45.67))); // group 45.67
-		// => (* (-123) (group 45.67))
+		Expr expression = new Expr.Assign(new Token(TokenType.IDENTIFIER, "myvar", null, 1),
+				new Expr.Literal("mynew\nvalue"));
 
 		System.out.println(new AstPrinter().print(expression));
 	}
