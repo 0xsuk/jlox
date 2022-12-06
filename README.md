@@ -7,8 +7,11 @@ declaration    -> varDecl
                   | statement ;
 varDecl        -> "var" IDENTIFIER ( "=" expression )? ;
 statement      -> exprStmt
+                  | ifStmt
                   | printStmt 
-				  | block ;
+                  | block ;
+ifStmt         -> "if" "(" expression ")" statement
+                ( "else" statement )? ; 
 block          -> "{" declaration* "}" ;
 exprStmt       -> expression ";" ;
 printStmt      -> "print" expression ";" ;
@@ -21,11 +24,11 @@ comparison     -> term ( ( ">" | ">=" | "<" | "<=" ) term )* ;
 term           -> factor ( ( "-" | "+" ) factor )* ;
 factor         -> unary ( ( "/" | "*" ) unary )* ;
 unary          -> ( "!" | "-" ) unary
-               | primary ;
+                  | primary ;
 primary        -> "true" | "false" | "nil"
-               | NUMBER | STRING
-               | "(" expression ")"
-			   | IDENTIFIER ;
+                  | NUMBER | STRING
+                  | "(" expression ")"
+                  | IDENTIFIER ;
 ```
 ```
 * means repeat zero or more times
