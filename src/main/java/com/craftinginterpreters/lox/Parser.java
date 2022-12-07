@@ -90,7 +90,7 @@ class Parser {
 	}
 
 	private Expr assignment() {
-		Expr expr = equality(); // don't know how long l-value will be, so parse them all first
+		Expr expr = or(); // don't know how long l-value will be, so parse them all first
 
 		if (match(EQUAL)) {
 			Token equals = previous();
@@ -105,6 +105,29 @@ class Parser {
 		}
 
 		return expr; // l-value is return value
+	}
+
+	private Expr or() {
+		Expr expr = and();
+		while (match(OR)) {
+			Token operator = previous();
+			Expr right = and();
+			expr = new Expr.Logical(expr, operator, right);
+		}
+
+		return expr;
+	}
+
+	private Expr and() {
+		Expr expr = equality();
+
+		while (match(AND)) {
+			Token operator = previous();
+			Expr right = equality();
+			expr = new Expr.Logical(expr, operator, right);
+		}
+
+		return expr;
 	}
 
 	private Stmt declaration() {
