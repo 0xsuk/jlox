@@ -43,6 +43,12 @@ class AstPrinter implements Expr.Visitor<String> {
 		return expr.name.lexeme;
 	}
 
+	@Override
+	public String visitCallExpr(Expr.Call expr) {
+		String lexeme = expr.callee.accept(this);
+		return lexeme; // TODO: for now just return function name;
+	}
+
 	private String parenthesize(String name, Expr... exprs) {
 		StringBuilder builder = new StringBuilder();
 
