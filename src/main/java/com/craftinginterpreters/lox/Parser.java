@@ -222,7 +222,8 @@ class Parser {
 		return expr;
 	}
 
-	private Stmt declaration() {
+	private Stmt declaration() { // the top of parser. Every ParseError will be catched here, and synchronize()
+																// advances the parser to the next declaration.
 		try {
 			if (match(CLASS))
 				return classDeclaration();
