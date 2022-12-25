@@ -1,9 +1,10 @@
 * Lox programming language
 
 ** Grammer
+#+begin_src text
 program        -> declaration* EOF ;
 declaration    -> classDecl
-                  | funDecl
+                   funDecl
                   | varDecl
                   | statement ;
 classDecl      -> "class" IDENTIFIER ( "<" IDENTIFIER )?
@@ -45,12 +46,8 @@ arguments      -> expression ( "," expression )* ;
 primary        -> "true" | "false" | "nil" | "this"
                   | NUMBER | STRING | IDENTIFIER | "(" expression ")"
                   | "super" "." IDENTIFIER ;
-=*= means repeat zero or more times
+,* means repeat zero or more times
 ? means zero or one time
 | mean or
-```
+#+end_src
 
-** links
-:PROPERTIES:
-:NOTER_DOCUMENT: src/main/java/com/craftinginterpreters/lox/Lox.java
-:END:
